@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exam Result</title>
+    <style>
+        body { 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            height: 100vh; 
+            background: #2c3e50; 
+            margin: 0; 
+        }
+
+        .result-card { 
+            background: white; 
+            padding: 40px; 
+            border-radius: 20px; 
+            text-align: center; 
+            width: 400px; 
+            box-shadow: 0 15px 35px rgba(0,0,0,0.4); 
+            animation: fadeIn 0.6s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.9); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        h2 { color: #34495e; margin-bottom: 10px; }
+
+        .score-circle { 
+            width: 130px; 
+            height: 130px; 
+            border-radius: 50%; 
+            background: #27ae60; 
+            color: white; 
+            line-height: 130px; 
+            font-size: 32px; 
+            margin: 20px auto; 
+            font-weight: bold; 
+            box-shadow: 0 5px 15px rgba(39, 174, 96, 0.3);
+        }
+
+        .info-box { 
+            text-align: left; 
+            margin-top: 30px; 
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 12px;
+            border-left: 5px solid #27ae60;
+        }
+
+        .info-row { 
+            margin-bottom: 12px; 
+            color: #555; 
+            font-size: 16px; 
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .label { font-weight: bold; color: #2c3e50; }
+        .success-msg { color: #27ae60; font-weight: bold; margin-top: 20px; font-size: 14px; }
+    </style>
+</head>
+<body>
+
+    <div class="result-card">
+        <h2>Submission Successful</h2>
+        <div id="score-display" class="score-circle"></div>
+        
+        <div class="info-box">
+            <div class="info-row">
+                <span class="label">Student Name:</span> 
+                <span id="res-name"></span>
+            </div>
+            <div class="info-row">
+                <span class="label">Father's Name:</span> 
+                <span id="res-father"></span>
+            </div>
+            <div class="info-row">
+                <span class="label">Class:</span> 
+                <span id="res-class"></span>
+            </div>
+            <div class="info-row">
+                <span class="label">DOB:</span> 
+                <span id="res-date"></span>
+            </div>
+        </div>
+
+        <p class="success-msg">Your record has been saved to the Student Record Manager.</p>
+    </div>
+
+    <script>
+        // Get all data from the URL parameters
+        const urlParams = new URLSearchParams(window.location.search);
+        
+        // Display Score
+        const score = urlParams.get('score');
+        const total = urlParams.get('total');
+        document.getElementById('score-display').innerText = `${score} / ${total}`;
+
+        // Display Fields
+        document.getElementById('res-name').innerText = urlParams.get('name') || "N/A";
+        document.getElementById('res-father').innerText = urlParams.get('father') || "N/A";
+        document.getElementById('res-class').innerText = urlParams.get('class') || "N/A";
+        document.getElementById('res-date').innerText = urlParams.get('date') || "N/A";
+    </script>
+</body>
+</html>

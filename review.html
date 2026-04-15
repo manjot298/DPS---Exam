@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Attempt Review</title>
+    <style>
+        body { font-family: sans-serif; padding: 40px; background: #f0f2f5; }
+        .container { max-width: 800px; margin: auto; background: white; padding: 30px; border-radius: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        .q-block { padding: 15px; border-bottom: 1px solid #eee; margin-bottom: 10px; border-radius: 8px; }
+        .correct { background: #d4edda; border-left: 5px solid #28a745; }
+        .wrong { background: #f8d7da; border-left: 5px solid #dc3545; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 id="name">Review:</h1>
+        <div id="list"></div>
+    </div>
+    <script src="questions.js"></script>
+    <script>
+        const id = new URLSearchParams(window.location.search).get('id');
+        const student = (JSON.parse(localStorage.getItem('master_records')) || [])[id];
+        const questions = quizSource.split('\n').filter(l => l.trim() !== "").map(line => {
+            const p = line.split('|'); return { q: p[0], opts: [p[1], p[2], p[3]], ans: parseInt(p[4]) };
+        });
+
+        if (student) {
+            document.getElementById('name').innerText = `Review: ${student.name} (${student.score}/${student.total})`;
+            const list = document.getElementById('list');
+            questions.forEach((q, i) => {
+                const choice = student.userAnswers[i];
+                const isCorrect = choice === q.ans;
+                list.innerHTML += `<div class="q-block ${isCorrect ? 'correct' : 'wrong'}">
+                    <p><b>${i+1}. ${q.q}</b></p>
+                    <p>Student choose: <b>${choice === -1 ? "Skipped" : q.opts[choice]}</b></p>
+                    ${!isCorrect ? `<p style="color:#28a745">Correct answer: <b>${q.opts[q.ans]}</b></p>` : ''}
+                </div>`;
+            });
+        }
+    </script>
+</body>
+</html>
